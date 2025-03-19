@@ -3,7 +3,7 @@
 I'm a big fan of playgrounds. Every repo should have a `playground.py` to make it easy to jump right
 into REPL-driven development.
 
-However, it's hard to understand what's in the `playground.py` once it gets big. This project eliminates this problem:
+However, it's hard to understand what's in the `playground.py` once it gets big. This project eliminates this problem ([example from this project](https://github.com/iloveitaly/python-starter-template)):
 
 ![alt text](screenshot.png)
 
