@@ -7,6 +7,8 @@ from typing import get_type_hints
 from rich.console import Console
 from rich.text import Text
 
+from ipython_playground.create import create_playground_file
+
 logging.basicConfig(
     level=os.environ.get("LOG_LEVEL", "INFO").upper(),
 )
@@ -127,4 +129,4 @@ def inspect_environment():
 
 
 def main():
-    logger.info("Hello, Logs!")
+    create_playground_file()
