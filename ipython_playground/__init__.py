@@ -16,12 +16,20 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def inspect_environment():
+def output():
     """Display relevant custom functions and variables with minimal formatting"""
 
     console = Console()
     width = console.width
-    current_module = inspect.currentframe().f_globals
+    frame = inspect.currentframe()
+
+    calling_frame = frame.f_back
+    current_module = calling_frame.f_globals if calling_frame else frame.f_globals
+
+    # Make sure to delete the references to avoid reference cycles
+    del frame
+    del calling_frame
+
     ipython_path = Path.home() / ".ipython"
     builtin_modules = {
         "os",
@@ -31,9 +39,11 @@ def inspect_environment():
         "subprocess",
         "importlib",
         "pkgutil",
+        "ipython_playground",
     }
     ipy_modules = {"IPython", "ipykernel"}
     exclude_vars = {"In", "Out", "PIPE", "get_ipython", "exit", "quit", "c"}
+    exclude_classes = {"Popen"}
 
     def truncate_text(text: str, max_width: int) -> str:
         if len(text) > max_width:
@@ -78,7 +88,11 @@ def inspect_environment():
     console.print("─" * width)
 
     for name, obj in current_module.items():
-        if inspect.isclass(obj) and not name.startswith("_"):
+        if (
+            inspect.isclass(obj)
+            and not name.startswith("_")
+            and name not in exclude_classes
+        ):
             try:
                 sig = str(inspect.signature(obj.__init__))
             except (TypeError, ValueError):
