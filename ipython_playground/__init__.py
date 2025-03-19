@@ -1,6 +1,7 @@
 import inspect
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import get_type_hints
 
@@ -143,4 +144,21 @@ def output():
 
 
 def main():
+    """
+    Creates a playground file for IPython.
+
+    This creates a new playground file with the necessary boilerplate
+    for interactive Python development.
+
+    Options:
+        --help     Show this help message and exit
+
+    For more detailed information, please refer to the README at:
+    https://github.com/yourusername/ipython_playground
+    """
+
+    if len(sys.argv) > 1 and sys.argv[1] == "--help":
+        print(main.__doc__)
+        return
+
     create_playground_file()
