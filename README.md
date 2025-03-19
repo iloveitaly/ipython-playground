@@ -5,6 +5,8 @@ into REPL-driven development.
 
 However, it's hard to understand what's in the `playground.py` once it gets big. This project eliminates this problem:
 
+![alt text](screenshot.png)
+
 ## Installation
 
 
