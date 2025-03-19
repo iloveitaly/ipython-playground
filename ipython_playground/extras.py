@@ -1,6 +1,31 @@
 # ruff: noqa: F401
 # isort: off
 
+
+def load_modules_for_ipython():
+    """Load modules for use in ipython sessions and return them as a dict."""
+    modules = {}
+    try:
+        import app.models
+
+        modules["models"] = app.models
+    except ImportError:
+        log.warning("Could not import app.models")
+
+    try:
+        import app.commands
+
+        modules["commands"] = app.commands
+    except ImportError:
+        log.warning("Could not import app.commands")
+
+    return modules
+
+
+# Import modules for ipython
+imported_modules = load_modules_for_ipython()
+globals().update(imported_modules)
+
 import app.models
 import app.commands
 
