@@ -1,13 +1,11 @@
 [project]
 name = "ipython-playground"
 version = "0.1.0"
-description = ""
-keywords = []
+description = "Understand what is in your ipython playground."
+keywords = ["repl", "ipython", "playground"]
 readme = "README.md"
 requires-python = ">=3.9"
-dependencies = [
-    "rich>=13.9.4",
-]
+dependencies = ["rich>=13.9.4"]
 authors = [{ name = "Michael Bianco", email = "mike@mikebian.co" }]
 urls = { "Repository" = "https://github.com/iloveitaly/ipython-playground" }
 
