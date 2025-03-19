@@ -1,41 +1,17 @@
+import inspect
 import logging
 import os
+from pathlib import Path
+from typing import get_type_hints
+
+from rich.console import Console
+from rich.text import Text
 
 logging.basicConfig(
     level=os.environ.get("LOG_LEVEL", "INFO").upper(),
 )
 
 logger = logging.getLogger(__name__)
-
-
-def main():
-    logger.info("Hello, Logs!")
-
-
-from activemodel import SessionManager
-import sqlalchemy as sa
-
-from sqlmodel import SQLModel
-from app.configuration.clerk import clerk
-from app.configuration.database import configure_database, database_url
-import app.models
-
-import inspect
-from typing import get_type_hints
-from rich.console import Console
-from rich.text import Text
-from pathlib import Path
-import inspect
-from sqlmodel import SQLModel
-import logging
-from playwright.async_api import async_playwright
-import funcy_pipe as fp
-from sqlmodel import create_engine
-from redis import Redis
-import pkgutil
-import importlib
-from activemodel.utils import find_all_sqlmodels
-from app.configuration.clerk import clerk
 
 
 def inspect_environment():
@@ -148,3 +124,7 @@ def inspect_environment():
             text.append(f"{name:<30}", style="cyan bold")
             text.append(truncate_text(type_info, width - 30), style="green")
             console.print(text)
+
+
+def main():
+    logger.info("Hello, Logs!")
