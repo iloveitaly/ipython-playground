@@ -10,6 +10,8 @@ from rich.text import Text
 
 from ipython_playground.create import create_playground_file
 
+from . import extras
+
 logging.basicConfig(
     level=os.environ.get("LOG_LEVEL", "INFO").upper(),
 )
@@ -141,6 +143,10 @@ def output():
             text.append(f"{name:<30}", style="cyan bold")
             text.append(truncate_text(type_info, width - 30), style="green")
             console.print(text)
+
+
+def all_extras(**kwargs):
+    return extras.all(**kwargs)
 
 
 def main():
