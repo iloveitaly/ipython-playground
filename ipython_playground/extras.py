@@ -4,6 +4,7 @@ import inspect
 import pkgutil
 import sys
 from types import ModuleType
+from typing import Optional
 
 from .utils import log
 
@@ -125,7 +126,7 @@ def setup_database_session(database_url):
     return {"engine": engine, "session": session, "sa_sql": sa_sql, "sa_run": sa_run}
 
 
-def all(*, database_url: str | None = None):
+def all(*, database_url: Optional[str] = None):
     modules = load_modules_for_ipython()
 
     if "models" in modules:
