@@ -64,9 +64,8 @@ def output():
 
     for name, obj in current_module.items():
         if (
-            inspect.isfunction(obj)
-            and not name.startswith("_")
-            and obj.__module__ == "__main__"
+            inspect.isfunction(obj) and not name.startswith("_")
+            # and obj.__module__ == "__main__"
         ):
             # Get the source file of the function
             try:
@@ -78,9 +77,18 @@ def output():
                 continue
 
             sig = str(inspect.signature(obj))
-            return_type = get_type_hints(obj).get("return", None)
-            if return_type:
-                sig += f" -> {return_type.__name__}"
+
+            try:
+                return_type = get_type_hints(obj).get("return", None)
+                if return_type:
+                    sig += f" -> {return_type.__name__}"
+            except NameError:
+                # This happens if the object was created with a class (like Engine) that was imported and used, but the
+                # symbol Engine is not present in the current module's namespace—maybe it was imported in another module,
+                # or imported and then deleted, or only referenced as a string in type hints. The object still has the
+                # correct type, but get_type_hints can't resolve the name unless Engine is available in the current globalns.
+                pass
+
             text = Text()
             text.append(f"{name:<30}", style="cyan bold")
             text.append(truncate_text(sig, width - 30), style="green")
