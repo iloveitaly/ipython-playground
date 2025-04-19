@@ -8,31 +8,40 @@ from types import ModuleType
 from .utils import log
 
 
-def load_modules_for_ipython() -> dict:
-    """Load list of common modules for use in ipython sessions and return them as a dict so they can be appended to the global namespace"""
-
+def load_app_modules() -> dict:
+    """Attempt to import common app modules and return them in a dict."""
     modules = {}
-
     try:
         import app.models
 
-        modules["models"] = app.models
+        modules["app.models"] = app.models
     except ImportError:
         log.warning("Could not import app.models")
 
     try:
         import app.commands
 
-        modules["commands"] = app.commands
+        modules["app.commands"] = app.commands
     except ImportError:
         log.warning("Could not import app.commands")
 
     try:
         import app.jobs
 
-        modules["jobs"] = app.jobs
+        modules["app.jobs"] = app.jobs
     except ImportError:
         log.warning("Could not import app.jobs")
+
+    return modules
+
+
+def load_modules_for_ipython() -> dict:
+    """Load list of common modules for use in ipython sessions and return them as a dict so they can be appended to the global namespace"""
+
+    modules = {}
+
+    # Load app modules
+    modules.update(load_app_modules())
 
     try:
         import funcy_pipe as fp
