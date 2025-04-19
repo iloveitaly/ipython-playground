@@ -1,6 +1,6 @@
 [project]
 name = "ipython-playground"
-version = "0.2.0"
+version = "0.3.0"
 description = "Understand what is in your ipython playground."
 keywords = ["repl", "ipython", "playground"]
 readme = "README.md"

@@ -1,4 +1,20 @@
-# 0.2.0 (2025-03-19)
+# [0.3.0](https://github.com/iloveitaly/ipython-playground/compare/v0.2.0...v0.3.0) (2025-04-19)
+
+
+### Bug Fixes
+
+* handle NameError in get_type_hints for missing imports ([028a529](https://github.com/iloveitaly/ipython-playground/commit/028a529cdcb16825bbcbdbc7cd5b386d4b35a169))
+* update playground to load all_extras globals before output ([6c5ee1f](https://github.com/iloveitaly/ipython-playground/commit/6c5ee1f8b5cfc27de1700bf6d8bafe488e9c256f))
+
+
+### Features
+
+* add app.jobs and sqlmodel to ipython playground imports ([608bc76](https://github.com/iloveitaly/ipython-playground/commit/608bc76220b844e28604a6b1c1755c00d883b8e0))
+* add extras.all for loading modules and models in ipython ([793f620](https://github.com/iloveitaly/ipython-playground/commit/793f620396e234ddfa25ba4aa5268238d31b5f2f))
+
+
+
+# [0.2.0](https://github.com/iloveitaly/ipython-playground/compare/9ee62b645e51b1d6aa25649db8b69fbeabaa6ab7...v0.2.0) (2025-03-19)
 
 
 ### Features
