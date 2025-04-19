@@ -10,6 +10,8 @@ def create_playground_file():
 # isort: off
 import ipython_playground
 
+globals().update(ipython_playground.all_extras())
+                
 ipython_playground.output()
 """)
     log.info("Setting executable permissions on playground.py")
