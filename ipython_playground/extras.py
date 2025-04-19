@@ -1,17 +1,18 @@
 # ruff: noqa: F401
-# isort: off
 
 import inspect
 import pkgutil
-from types import ModuleType
-from .utils import log
 import sys
+from types import ModuleType
+
+from .utils import log
 
 
-def load_modules_for_ipython():
+def load_modules_for_ipython() -> dict:
     """Load list of common modules for use in ipython sessions and return them as a dict so they can be appended to the global namespace"""
 
     modules = {}
+
     try:
         import app.models
 
@@ -27,6 +28,13 @@ def load_modules_for_ipython():
         log.warning("Could not import app.commands")
 
     try:
+        import app.jobs
+
+        modules["jobs"] = app.jobs
+    except ImportError:
+        log.warning("Could not import app.jobs")
+
+    try:
         import funcy_pipe as fp
 
         modules["fp"] = fp
@@ -39,6 +47,16 @@ def load_modules_for_ipython():
         modules["sa"] = sa
     except ImportError:
         log.warning("Could not import sqlalchemy")
+
+    try:
+        import sqlmodel as sm
+        from sqlmodel import SQLModel, select
+
+        modules["sm"] = sm
+        modules["SQLModel"] = SQLModel
+        modules["select"] = select
+    except ImportError:
+        log.warning("Could not import sqlmodel")
 
     return modules
 
@@ -80,9 +98,9 @@ def find_all_sqlmodels(module: ModuleType):
 def setup_database_session(database_url):
     """Set up the SQLAlchemy engine and session, return helpful globals"""
     from activemodel import SessionManager
-    from sqlalchemy import create_engine
     from activemodel.session_manager import _session_context
     from activemodel.utils import compile_sql
+    from sqlalchemy import create_engine
 
     def sa_run(stmt):
         result = session.execute(stmt).all()
