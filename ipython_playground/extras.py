@@ -105,42 +105,16 @@ def find_all_sqlmodels(module: ModuleType):
     return model_classes
 
 
-def setup_database_session(database_url):
-    """Set up the SQLAlchemy engine and session, return helpful globals"""
-    from activemodel import SessionManager
-    from activemodel.session_manager import _session_context
-    from activemodel.utils import compile_sql
-    from sqlalchemy import create_engine
-
-    def sa_run(stmt):
-        result = session.execute(stmt).all()
-        return result
-
-    def sa_sql(stmt):
-        return compile_sql(stmt)
-
-    engine = create_engine(database_url, echo=True)
-    session = SessionManager.get_instance().get_session().__enter__()
-    _session_context.set(session)
-
-    return {"engine": engine, "session": session, "sa_sql": sa_sql, "sa_run": sa_run}
-
-
 def all(*, database_url: Optional[str] = None):
+    from .database import get_database_url, setup_database_session
+
     modules = load_modules_for_ipython()
 
-    if "models" in modules:
-        modules = modules | find_all_sqlmodels(modules["models"])
+    if "app.models" in modules:
+        modules = modules | find_all_sqlmodels(modules["app.models"])
 
     if not database_url:
-        try:
-            from app.configuration.database import (
-                database_url as database_url_generator,
-            )
-
-            database_url = database_url_generator()
-        except ImportError:
-            database_url = None
+        database_url = get_database_url()
 
     if database_url:
         modules = modules | setup_database_session(database_url)
