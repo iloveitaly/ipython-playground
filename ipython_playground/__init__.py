@@ -12,8 +12,20 @@ from ipython_playground.create import create_playground_file
 
 from . import extras
 
+
+def _get_valid_log_level(env_level):
+    """Get a valid log level from environment variable, with fallback to INFO."""
+    if not env_level:
+        return "INFO"
+    
+    level = env_level.upper()
+    valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+    
+    return level if level in valid_levels else "INFO"
+
+
 logging.basicConfig(
-    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    level=_get_valid_log_level(os.environ.get("LOG_LEVEL", "INFO")),
 )
 
 logger = logging.getLogger(__name__)
