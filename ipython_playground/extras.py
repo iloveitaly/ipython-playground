@@ -108,8 +108,12 @@ def find_all_sqlmodels(module: ModuleType):
 def all(*, database_url: Optional[str] = None):
     from .database import get_database_url, setup_database_session
     from .redis import setup_redis
+    from .utils import read_data_url
 
     modules = load_modules_for_ipython()
+    
+    # Add utility functions
+    modules["read_data_url"] = read_data_url
 
     if "app.models" in modules:
         modules = modules | find_all_sqlmodels(modules["app.models"])
