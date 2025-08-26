@@ -6,7 +6,7 @@ import sys
 from types import ModuleType
 from typing import Optional
 
-from .utils import log
+from .logger import log
 
 
 def load_app_modules() -> dict:

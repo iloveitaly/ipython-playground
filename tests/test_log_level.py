@@ -3,7 +3,7 @@
 import os
 from unittest import mock
 
-from ipython_playground import _get_valid_log_level
+from ipython_playground.logger import _get_valid_log_level
 
 
 def test_get_valid_log_level_fallback():
