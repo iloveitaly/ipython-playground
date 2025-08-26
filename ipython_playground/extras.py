@@ -107,6 +107,7 @@ def find_all_sqlmodels(module: ModuleType):
 
 def all(*, database_url: Optional[str] = None):
     from .database import get_database_url, setup_database_session
+    from .redis import setup_redis
 
     modules = load_modules_for_ipython()
 
@@ -118,5 +119,8 @@ def all(*, database_url: Optional[str] = None):
 
     if database_url:
         modules = modules | setup_database_session(database_url)
+
+    # Add redis client if available
+    modules = modules | setup_redis()
 
     return modules
