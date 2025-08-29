@@ -36,44 +36,79 @@ def load_app_modules() -> dict:
     return modules
 
 
-def load_modules_for_ipython() -> dict:
-    """Load list of common modules for use in ipython sessions and return them as a dict so they can be appended to the global namespace"""
+def get_default_module_imports():
+    """Get the default list of modules to import with their aliases and options."""
+    return [
+        # Built-in modules - always available
+        {"module": "json", "alias": "json"},
+        {"module": "re", "alias": "re"},
+        
+        # External libraries with aliases
+        {"module": "funcy", "alias": "f"},
+        {"module": "funcy_pipe", "alias": "fp", "log_warning": True},
+        {"module": "sqlalchemy", "alias": "sa", "log_warning": True},
+        
+        # Special handling for sqlmodel - imports additional symbols
+        {
+            "module": "sqlmodel", 
+            "alias": "sm", 
+            "log_warning": True,
+            "extra_imports": [
+                {"from": "sqlmodel", "import": "SQLModel", "alias": "SQLModel"},
+                {"from": "sqlmodel", "import": "select", "alias": "select"}
+            ]
+        }
+    ]
+
+
+def load_modules_for_ipython(module_imports=None) -> dict:
+    """Load list of common modules for use in ipython sessions and return them as a dict so they can be appended to the global namespace
+    
+    Args:
+        module_imports: Optional list of module import configurations. If None, uses default list.
+                       Each item should be a dict with keys:
+                       - module: module name to import
+                       - alias: name to use in namespace (optional, defaults to module name)
+                       - log_warning: whether to log warning on import failure (optional, defaults to False)
+                       - extra_imports: list of additional imports from the module (optional)
+    """
 
     modules = {}
 
     # Load app modules
     modules.update(load_app_modules())
 
-    try:
-        import funcy as f
+    if module_imports is None:
+        module_imports = get_default_module_imports()
 
-        modules["f"] = f
-    except ImportError:
-        log.warning("Could not import funcy")
+    for import_config in module_imports:
+        module_name = import_config["module"]
+        alias = import_config.get("alias", module_name)
+        log_warning = import_config.get("log_warning", False)
+        extra_imports = import_config.get("extra_imports", [])
 
-    try:
-        import funcy_pipe as fp
+        try:
+            imported_module = __import__(module_name)
+            modules[alias] = imported_module
 
-        modules["fp"] = fp
-    except ImportError:
-        log.warning("Could not import funcy_pipe")
+            # Handle extra imports from the module
+            for extra_import in extra_imports:
+                try:
+                    from_module = extra_import["from"]
+                    import_name = extra_import["import"]
+                    import_alias = extra_import.get("alias", import_name)
+                    
+                    # Use importlib for from imports
+                    import importlib
+                    mod = importlib.import_module(from_module)
+                    modules[import_alias] = getattr(mod, import_name)
+                except (ImportError, AttributeError) as e:
+                    if log_warning:
+                        log.warning(f"Could not import {import_name} from {from_module}: {e}")
 
-    try:
-        import sqlalchemy as sa
-
-        modules["sa"] = sa
-    except ImportError:
-        log.warning("Could not import sqlalchemy")
-
-    try:
-        import sqlmodel as sm
-        from sqlmodel import SQLModel, select
-
-        modules["sm"] = sm
-        modules["SQLModel"] = SQLModel
-        modules["select"] = select
-    except ImportError:
-        log.warning("Could not import sqlmodel")
+        except ImportError:
+            if log_warning:
+                log.warning(f"Could not import {module_name}")
 
     return modules
 
