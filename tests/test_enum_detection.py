@@ -130,8 +130,50 @@ def test_empty_result_when_no_enums_or_models():
     assert result == {}, f"Expected empty dict, got: {result}"
 
 
-if __name__ == "__main__":
-    test_enum_detection_in_package()
-    test_enum_detection_in_single_module() 
-    test_empty_result_when_no_enums_or_models()
-    print("✓ All enum detection tests passed!")
+def test_string_enum_detection():
+    """Test that enums inheriting from str are detected (like ScreeningStatus example)."""
+    
+    import enum
+    
+    # Create a module-like object with str-based enum (like the ScreeningStatus example)
+    class TestModule:
+        __name__ = 'test_string_enum_module'
+        
+        class ScreeningStatus(str, enum.Enum):
+            pending = "pending"
+            active = "active"
+            fully_funded = "fully_funded"
+            sold_out = "sold_out"
+            archived = "archived"
+            refunded = "refunded"
+        
+        class SimpleStatus(enum.Enum):
+            ON = "on"
+            OFF = "off"
+    
+    # Set the module reference for the enums so they can be detected
+    TestModule.ScreeningStatus.__module__ = 'test_string_enum_module'
+    TestModule.SimpleStatus.__module__ = 'test_string_enum_module'
+    
+    test_module_instance = TestModule()
+    result = find_all_sqlmodels(test_module_instance)
+    
+    # Check that both enums were found
+    assert 'ScreeningStatus' in result, f"ScreeningStatus enum not found in result: {list(result.keys())}"
+    assert 'SimpleStatus' in result, f"SimpleStatus enum not found in result: {list(result.keys())}"
+    
+    # Verify they are actually enum classes
+    assert issubclass(result['ScreeningStatus'], enum.Enum), "ScreeningStatus is not an enum"
+    assert issubclass(result['SimpleStatus'], enum.Enum), "SimpleStatus is not an enum"
+    
+    # Verify the str+enum functionality works
+    screening_status = result['ScreeningStatus']
+    assert screening_status.pending == "pending"
+    assert screening_status.active == "active"
+    assert isinstance(screening_status.pending, str), "ScreeningStatus value should be a string"
+    
+    # Test that it can be used as a string (str enums equal their values)
+    assert screening_status.pending == "pending"
+    assert screening_status.active == "active"
+
+

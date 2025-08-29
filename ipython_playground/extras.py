@@ -81,11 +81,7 @@ def find_all_sqlmodels(module: ModuleType):
         # Still proceed with enum detection even if SQLModel is not available
         SQLModel = None
     
-    try:
-        import enum
-    except ImportError:
-        log.warning("Could not import enum module")
-        enum = None
+    import enum
 
     log.debug(f"Starting model and enum import from module: {module.__name__}")
     model_classes = {}
@@ -98,7 +94,7 @@ def find_all_sqlmodels(module: ModuleType):
             if SQLModel and inspect.isclass(obj) and issubclass(obj, SQLModel) and obj != SQLModel and getattr(obj, '__module__', '') == module.__name__:
                 log.debug(f"Found model class: {name}")
                 model_classes[name] = obj
-            elif enum and inspect.isclass(obj) and issubclass(obj, enum.Enum) and obj != enum.Enum and getattr(obj, '__module__', '') == module.__name__:
+            elif inspect.isclass(obj) and issubclass(obj, enum.Enum) and obj != enum.Enum and getattr(obj, '__module__', '') == module.__name__:
                 log.debug(f"Found enum class: {name}")
                 model_classes[name] = obj
         return model_classes
@@ -120,7 +116,7 @@ def find_all_sqlmodels(module: ModuleType):
             if SQLModel and inspect.isclass(obj) and issubclass(obj, SQLModel) and obj != SQLModel:
                 log.debug(f"Found model class: {name}")
                 model_classes[name] = obj
-            elif enum and inspect.isclass(obj) and issubclass(obj, enum.Enum) and obj != enum.Enum and getattr(obj, '__module__', '') == submodule.__name__:
+            elif inspect.isclass(obj) and issubclass(obj, enum.Enum) and obj != enum.Enum and getattr(obj, '__module__', '') == submodule.__name__:
                 log.debug(f"Found enum class: {name}")
                 model_classes[name] = obj
 
