@@ -72,16 +72,36 @@ def load_modules_for_ipython() -> dict:
 
 
 def find_all_sqlmodels(module: ModuleType):
-    """Import all model classes from module and submodules into current namespace."""
+    """Import all model classes and enum types from module and submodules into current namespace."""
 
     try:
         from sqlmodel import SQLModel
     except ImportError:
         log.warning("Could not find SQLModel, skipping model discovery")
-        return {}
+        # Still proceed with enum detection even if SQLModel is not available
+        SQLModel = None
+    
+    try:
+        import enum
+    except ImportError:
+        log.warning("Could not import enum module")
+        enum = None
 
-    log.debug(f"Starting model import from module: {module.__name__}")
+    log.debug(f"Starting model and enum import from module: {module.__name__}")
     model_classes = {}
+
+    # Check if module has __path__ (i.e., it's a package)
+    if not hasattr(module, '__path__'):
+        log.debug(f"Module {module.__name__} is not a package, checking for classes directly")
+        # Check the module itself for classes
+        for name, obj in inspect.getmembers(module):
+            if SQLModel and inspect.isclass(obj) and issubclass(obj, SQLModel) and obj != SQLModel and getattr(obj, '__module__', '') == module.__name__:
+                log.debug(f"Found model class: {name}")
+                model_classes[name] = obj
+            elif enum and inspect.isclass(obj) and issubclass(obj, enum.Enum) and obj != enum.Enum and getattr(obj, '__module__', '') == module.__name__:
+                log.debug(f"Found enum class: {name}")
+                model_classes[name] = obj
+        return model_classes
 
     # Walk through all submodules
     for loader, module_name, is_pkg in pkgutil.walk_packages(module.__path__):
@@ -97,11 +117,14 @@ def find_all_sqlmodels(module: ModuleType):
 
         # Get all classes from module
         for name, obj in inspect.getmembers(submodule):
-            if inspect.isclass(obj) and issubclass(obj, SQLModel) and obj != SQLModel:
+            if SQLModel and inspect.isclass(obj) and issubclass(obj, SQLModel) and obj != SQLModel:
                 log.debug(f"Found model class: {name}")
                 model_classes[name] = obj
+            elif enum and inspect.isclass(obj) and issubclass(obj, enum.Enum) and obj != enum.Enum and getattr(obj, '__module__', '') == submodule.__name__:
+                log.debug(f"Found enum class: {name}")
+                model_classes[name] = obj
 
-    log.debug(f"Completed model import. Found {len(model_classes)} models")
+    log.debug(f"Completed model and enum import. Found {len(model_classes)} classes")
     return model_classes
 
 
