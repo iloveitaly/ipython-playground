@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.text import Text
 
 from ipython_playground.create import create_playground_file
-from ipython_playground.logger import _get_valid_log_level, logger
+from ipython_playground.logger import logger
 
 from . import extras
 

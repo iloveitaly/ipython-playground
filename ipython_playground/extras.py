@@ -106,14 +106,17 @@ def find_all_sqlmodels(module: ModuleType):
 
 
 def all(*, database_url: Optional[str] = None):
+    import inspect
     from .database import get_database_url, setup_database_session
     from .redis import setup_redis
-    from .utils import read_data_url
+    from . import utils
 
     modules = load_modules_for_ipython()
     
-    # Add utility functions
-    modules["read_data_url"] = read_data_url
+    # Add all utility functions from utils module
+    for name, obj in inspect.getmembers(utils):
+        if inspect.isfunction(obj) and not name.startswith('_'):
+            modules[name] = obj
 
     if "app.models" in modules:
         modules = modules | find_all_sqlmodels(modules["app.models"])

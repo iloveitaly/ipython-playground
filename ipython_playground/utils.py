@@ -1,3 +1,11 @@
+"""
+Utility functions for the ipython-playground package.
+
+This module contains general-purpose utility functions that are useful in 
+playground environments for data manipulation, external data fetching, and 
+other common tasks.
+"""
+
 import re
 from urllib.request import urlopen
 

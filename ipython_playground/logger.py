@@ -1,41 +1,44 @@
+"""
+Logging configuration for the ipython-playground package.
+
+This module sets up logging configuration and provides logger instances
+for use throughout the package.
+"""
+
 import logging
 import os
 
+# Try to get and set the log level, with fallback to INFO on invalid values
+log_level = "INFO"  # default
+env_level = os.environ.get("LOG_LEVEL", "INFO").upper()
 
-def _get_valid_log_level(env_level):
-    """Get a valid log level from environment variable, with fallback to INFO."""
-    if not env_level:
-        return "INFO"
-    
-    level = env_level.upper()
-    
-    if level in logging._nameToLevel:
-        return level
+try:
+    # Try to set the level to validate it
+    logging.getLevelName(env_level)
+    if env_level in logging._nameToLevel:
+        log_level = env_level
     else:
-        # We can't use the logger here since logging isn't configured yet,
-        # so we'll return the info and handle logging later
-        return "INFO", env_level  # Return both the fallback level and original value
-
-
-# Get the log level and check if we need to warn about fallback
-log_level_result = _get_valid_log_level(os.environ.get("LOG_LEVEL", "INFO"))
-if isinstance(log_level_result, tuple):
-    # Invalid level was provided
-    log_level, original_level = log_level_result
+        raise ValueError(f"Invalid log level: {env_level}")
+except (ValueError, AttributeError):
+    # Invalid level provided, we'll log a warning after basic config
+    invalid_level = env_level
+    log_level = "INFO"
 else:
-    # Valid level was provided
-    log_level = log_level_result
-    original_level = None
+    invalid_level = None
 
+# Configure logging - this only takes effect if no handlers exist yet
 logging.basicConfig(
     level=log_level,
 )
 
+# Also set the root logger level explicitly in case basicConfig was already called
+logging.getLogger().setLevel(log_level)
+
 logger = logging.getLogger(__name__)
 
 # Log warning if an invalid log level was provided
-if original_level:
-    logger.warning(f"Invalid log level '{original_level}' provided in LOG_LEVEL environment variable. Falling back to INFO.")
+if invalid_level:
+    logger.warning(f"Invalid log level '{invalid_level}' provided in LOG_LEVEL environment variable. Falling back to INFO.")
 
 # Create the log instance for backwards compatibility with existing utils.py
 log = logging.getLogger(__name__)
