@@ -40,8 +40,16 @@ def get_default_module_imports():
     """Get the default list of modules to import with their aliases and options."""
     return [
         # Built-in modules - always available
-        {"module": "json", "alias": "json"},
-        {"module": "re", "alias": "re"},
+        {"module": "json"},
+        {"module": "re"},
+        
+        # Additional built-in and common imports
+        {"module": "datetime", "extra_imports": [
+            {"from": "datetime", "import": "datetime"}
+        ]},
+        {"module": "whenever", "extra_imports": [
+            {"from": "whenever", "import": "SystemDateTime"}
+        ], "log_warning": True},
         
         # External libraries with aliases
         {"module": "funcy", "alias": "f"},
@@ -54,8 +62,8 @@ def get_default_module_imports():
             "alias": "sm", 
             "log_warning": True,
             "extra_imports": [
-                {"from": "sqlmodel", "import": "SQLModel", "alias": "SQLModel"},
-                {"from": "sqlmodel", "import": "select", "alias": "select"}
+                {"from": "sqlmodel", "import": "SQLModel"},
+                {"from": "sqlmodel", "import": "select"}
             ]
         }
     ]
