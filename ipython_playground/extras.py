@@ -45,6 +45,13 @@ def load_modules_for_ipython() -> dict:
     modules.update(load_app_modules())
 
     try:
+        import funcy as f
+
+        modules["f"] = f
+    except ImportError:
+        log.warning("Could not import funcy")
+
+    try:
         import funcy_pipe as fp
 
         modules["fp"] = fp
