@@ -48,7 +48,7 @@ def get_default_module_imports():
             {"from": "datetime", "import": "datetime"}
         ]},
         {"module": "whenever", "extra_imports": [
-            {"from": "whenever", "import": "SystemDateTime"}
+            {"from": "whenever", "import": "ZonedDateTime"}
         ], "log_warning": True},
         
         # External libraries with aliases
