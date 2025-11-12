@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/iloveitaly/ipython-playground/compare/v0.4.0...v0.4.1) (2025-11-12)
+
+
+### Bug Fixes
+
+* replace SystemDateTime with ZonedDateTime for whenever library ([#19](https://github.com/iloveitaly/ipython-playground/issues/19)) ([2f9f99b](https://github.com/iloveitaly/ipython-playground/commit/2f9f99b2a44c7da0673246b70d172ec07cdb64b0))
+
+
+
 # [0.4.0](https://github.com/iloveitaly/ipython-playground/compare/v0.3.0...v0.4.0) (2025-08-26)
 
 
