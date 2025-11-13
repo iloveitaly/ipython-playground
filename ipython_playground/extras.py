@@ -6,7 +6,7 @@ import sys
 from types import ModuleType
 from typing import Optional
 
-from .utils import log
+from .logger import log
 
 
 def load_app_modules() -> dict:
@@ -156,10 +156,17 @@ def find_all_sqlmodels(module: ModuleType):
 
 
 def all(*, database_url: Optional[str] = None):
+    import inspect
     from .database import get_database_url, setup_database_session
     from .redis import setup_redis
+    from . import utils
 
     modules = load_modules_for_ipython()
+    
+    # Add all utility functions from utils module
+    for name, obj in inspect.getmembers(utils):
+        if inspect.isfunction(obj) and not name.startswith('_'):
+            modules[name] = obj
 
     if "app.models" in modules:
         modules = modules | find_all_sqlmodels(modules["app.models"])

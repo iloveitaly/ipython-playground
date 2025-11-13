@@ -1,6 +1,6 @@
 from typing import Optional
 
-from .utils import log
+from .logger import log
 
 
 def setup_database_session(database_url):

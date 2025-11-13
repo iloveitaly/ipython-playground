@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Dict
 
-from .utils import log
+from .logger import log
 
 
 def setup_redis() -> Dict[str, object]:

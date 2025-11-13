@@ -1,6 +1,6 @@
 import os
 
-from ipython_playground.utils import log
+from ipython_playground.logger import log
 
 
 def create_playground_file():
