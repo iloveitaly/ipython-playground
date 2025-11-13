@@ -86,6 +86,19 @@ def output():
     def get_module_info(module) -> str:
         module_path = getattr(module, "__path__", [""])[0]
         version = getattr(module, "__version__", "unknown version")
+        
+        # Make path relative to current working directory
+        if module_path:
+            try:
+                cwd = Path.cwd()
+                abs_module_path = Path(module_path).resolve()
+                relative_path = abs_module_path.relative_to(cwd)
+                module_path = str(relative_path)
+            except (ValueError, OSError):
+                # If path cannot be made relative (e.g., on different drive or outside cwd),
+                # keep the absolute path
+                pass
+        
         return f"{module.__name__} ({version}) from {module_path}"
 
     # Functions Section
