@@ -5,10 +5,10 @@ from .utils import log
 
 def setup_database_session(database_url):
     """Set up the SQLAlchemy engine and session, return helpful globals"""
-    from activemodel import SessionManager
-    from activemodel.session_manager import _session_context
-    from activemodel.utils import compile_sql
-    from sqlalchemy import create_engine
+    from activemodel import SessionManager  # type: ignore
+    from activemodel.session_manager import _session_context  # type: ignore
+    from activemodel.utils import compile_sql  # type: ignore
+    from sqlalchemy import create_engine  # type: ignore
 
     def sa_run(stmt):
         result = session.execute(stmt).all()
@@ -26,7 +26,7 @@ def setup_database_session(database_url):
 
 def reset_database_session(database_url: str):
     """Reset the database session with a new database URL"""
-    from activemodel.session_manager import _session_context
+    from activemodel.session_manager import _session_context  # type: ignore
 
     log.info(f"Resetting database session with URL: {database_url}")
 
@@ -45,7 +45,7 @@ def reset_database_session(database_url: str):
 def get_database_url() -> Optional[str]:
     """Attempt to get database URL from app configuration"""
     try:
-        from app.configuration.database import (
+        from app.configuration.database import (  # type: ignore
             database_url as database_url_generator,
         )
 

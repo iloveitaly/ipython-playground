@@ -17,9 +17,9 @@ def _get_valid_log_level(env_level):
     """Get a valid log level from environment variable, with fallback to INFO."""
     if not env_level:
         return "INFO"
-    
+
     level = env_level.upper()
-    
+
     if level in logging._nameToLevel:
         return level
     else:
@@ -46,7 +46,9 @@ logger = logging.getLogger(__name__)
 
 # Log warning if an invalid log level was provided
 if original_level:
-    logger.warning(f"Invalid log level '{original_level}' provided in LOG_LEVEL environment variable. Falling back to INFO.")
+    logger.warning(
+        f"Invalid log level '{original_level}' provided in LOG_LEVEL environment variable. Falling back to INFO."
+    )
 
 
 def output():
@@ -55,9 +57,10 @@ def output():
     console = Console()
     width = console.width
     frame = inspect.currentframe()
-
-    calling_frame = frame.f_back
-    current_module = calling_frame.f_globals if calling_frame else frame.f_globals
+    calling_frame = frame.f_back  # type: ignore
+    current_module = (
+        calling_frame.f_globals if calling_frame else frame.f_globals  # type: ignore
+    )  # type: ignore
 
     # Make sure to delete the references to avoid reference cycles
     del frame
@@ -74,7 +77,6 @@ def output():
         "pkgutil",
         "ipython_playground",
     }
-    ipy_modules = {"IPython", "ipykernel"}
     exclude_vars = {"In", "Out", "PIPE", "get_ipython", "exit", "quit", "c"}
     exclude_classes = {"Popen"}
 

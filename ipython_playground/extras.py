@@ -13,21 +13,21 @@ def load_app_modules() -> dict:
     """Attempt to import common app modules and return them in a dict."""
     modules = {}
     try:
-        import app.models
+        import app.models  # type: ignore
 
         modules["app.models"] = app.models
     except ImportError:
         log.warning("Could not import app.models")
 
     try:
-        import app.commands
+        import app.commands  # type: ignore
 
         modules["app.commands"] = app.commands
     except ImportError:
         log.warning("Could not import app.commands")
 
     try:
-        import app.jobs
+        import app.jobs  # type: ignore
 
         modules["app.jobs"] = app.jobs
     except ImportError:
@@ -42,36 +42,36 @@ def get_default_module_imports():
         # Built-in modules - always available
         {"module": "json"},
         {"module": "re"},
-        
         # Additional built-in and common imports
-        {"module": "datetime", "extra_imports": [
-            {"from": "datetime", "import": "datetime"}
-        ]},
-        {"module": "whenever", "extra_imports": [
-            {"from": "whenever", "import": "ZonedDateTime"}
-        ], "log_warning": True},
-        
+        {
+            "module": "datetime",
+            "extra_imports": [{"from": "datetime", "import": "datetime"}],
+        },
+        {
+            "module": "whenever",
+            "extra_imports": [{"from": "whenever", "import": "ZonedDateTime"}],
+            "log_warning": True,
+        },
         # External libraries with aliases
         {"module": "funcy", "alias": "f"},
         {"module": "funcy_pipe", "alias": "fp", "log_warning": True},
         {"module": "sqlalchemy", "alias": "sa", "log_warning": True},
-        
         # Special handling for sqlmodel - imports additional symbols
         {
-            "module": "sqlmodel", 
-            "alias": "sm", 
+            "module": "sqlmodel",
+            "alias": "sm",
             "log_warning": True,
             "extra_imports": [
                 {"from": "sqlmodel", "import": "SQLModel"},
-                {"from": "sqlmodel", "import": "select"}
-            ]
-        }
+                {"from": "sqlmodel", "import": "select"},
+            ],
+        },
     ]
 
 
 def load_modules_for_ipython(module_imports=None) -> dict:
     """Load list of common modules for use in ipython sessions and return them as a dict so they can be appended to the global namespace
-    
+
     Args:
         module_imports: Optional list of module import configurations. If None, uses default list.
                        Each item should be a dict with keys:
@@ -101,18 +101,21 @@ def load_modules_for_ipython(module_imports=None) -> dict:
 
             # Handle extra imports from the module
             for extra_import in extra_imports:
+                from_module = extra_import["from"]
+                import_name = extra_import["import"]
+                import_alias = extra_import.get("alias", import_name)
+
                 try:
-                    from_module = extra_import["from"]
-                    import_name = extra_import["import"]
-                    import_alias = extra_import.get("alias", import_name)
-                    
                     # Use importlib for from imports
                     import importlib
+
                     mod = importlib.import_module(from_module)
                     modules[import_alias] = getattr(mod, import_name)
                 except (ImportError, AttributeError) as e:
                     if log_warning:
-                        log.warning(f"Could not import {import_name} from {from_module}: {e}")
+                        log.warning(
+                            f"Could not import {import_name} from {from_module}: {e}"
+                        )
 
         except ImportError:
             if log_warning:
@@ -125,7 +128,7 @@ def find_all_sqlmodels(module: ModuleType):
     """Import all model classes from module and submodules into current namespace."""
 
     try:
-        from sqlmodel import SQLModel
+        from sqlmodel import SQLModel  # type: ignore
     except ImportError:
         log.warning("Could not find SQLModel, skipping model discovery")
         return {}
