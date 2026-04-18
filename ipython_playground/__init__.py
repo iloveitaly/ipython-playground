@@ -1,9 +1,20 @@
+import importlib.metadata
 import inspect
 import logging
 import os
 import sys
 from pathlib import Path
-from typing import get_type_hints
+from typing import Any, get_type_hints
+
+
+def _format_signature(obj: Any) -> str:
+    try:
+        sig = str(inspect.signature(obj.__init__ if inspect.isclass(obj) else obj))
+        if sig in ("(self, *args, **kwargs)", "(self, /, *args, **kwargs)"):
+            return ""
+        return sig
+    except (TypeError, ValueError):
+        return ""
 
 from rich.console import Console
 from rich.text import Text
@@ -86,9 +97,26 @@ def output():
         return text
 
     def get_module_info(module) -> str:
-        module_path = getattr(module, "__path__", [""])[0]
-        version = getattr(module, "__version__", "unknown version")
-        return f"{module.__name__} ({version}) from {module_path}"
+        # Get path
+        path = ""
+        if hasattr(module, "__path__") and module.__path__:
+            path = module.__path__[0]
+        elif hasattr(module, "__file__"):
+            path = module.__file__
+
+        # Get version
+        v = None
+        # Try modern way first (metadata)
+        pkg_name = module.__name__.split(".")[0]
+        try:
+            v = importlib.metadata.version(pkg_name)
+        except (importlib.metadata.PackageNotFoundError, AttributeError, ValueError):
+            # Fallback to __version__ attribute
+            v = getattr(module, "__version__", None)
+
+        if v and v != "unknown version":
+            return f"{module.__name__} ({v}) from {path}"
+        return f"{module.__name__} from {path}"
 
     # Functions Section
     console.print("\n[bold blue]Custom Functions[/bold blue]")
@@ -108,7 +136,7 @@ def output():
             except (TypeError, ValueError):
                 continue
 
-            sig = str(inspect.signature(obj))
+            sig = _format_signature(obj)
 
             try:
                 return_type = get_type_hints(obj).get("return", None)
@@ -136,10 +164,7 @@ def output():
             and not name.startswith("_")
             and name not in exclude_classes
         ):
-            try:
-                sig = str(inspect.signature(obj.__init__))
-            except (TypeError, ValueError):
-                sig = "()"
+            sig = _format_signature(obj)
             text = Text()
             text.append(f"{name:<30}", style="cyan bold")
             text.append(truncate_text(sig, width - 30), style="green")

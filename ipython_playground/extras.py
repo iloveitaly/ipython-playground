@@ -49,7 +49,10 @@ def get_default_module_imports():
         },
         {
             "module": "whenever",
-            "extra_imports": [{"from": "whenever", "import": "ZonedDateTime"}],
+            "extra_imports": [
+                {"from": "whenever", "import": "ZonedDateTime"},
+                {"from": "whenever", "import": "Instant"},
+            ],
             "log_warning": True,
         },
         # External libraries with aliases
