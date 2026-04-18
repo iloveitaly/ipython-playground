@@ -6,6 +6,13 @@ import sys
 from pathlib import Path
 from typing import Any, get_type_hints
 
+from rich.console import Console
+from rich.text import Text
+
+from ipython_playground.create import create_playground_file
+
+from . import extras
+
 
 def _format_signature(obj: Any) -> str:
     try:
@@ -15,13 +22,6 @@ def _format_signature(obj: Any) -> str:
         return sig
     except (TypeError, ValueError):
         return ""
-
-from rich.console import Console
-from rich.text import Text
-
-from ipython_playground.create import create_playground_file
-
-from . import extras
 
 
 def _get_valid_log_level(env_level):
