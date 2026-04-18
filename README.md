@@ -1,3 +1,8 @@
+[![Release Notes](https://img.shields.io/github/release/iloveitaly/ipython-playground)](https://github.com/iloveitaly/ipython-playground/releases)
+[![Downloads](https://static.pepy.tech/badge/ipython-playground/month)](https://pepy.tech/project/ipython-playground)
+![GitHub CI Status](https://github.com/iloveitaly/ipython-playground/actions/workflows/build_and_publish.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # IPython Playground
 
 I'm a big fan of playgrounds. Every repo should have a `playground.py` to make it easy to jump right
@@ -9,9 +14,8 @@ However, it's hard to understand what's in the `playground.py` once it gets big.
 
 ## Installation
 
-
-```shell
-pip install ipython-playground
+```bash
+uv add ipython-playground
 ```
 
 ## Usage
@@ -29,3 +33,7 @@ The `ipython_playground/extras.py` file provides logic to automatically import a
 - If a database URL is available (either passed in or imported from your app config), sets up a SQLAlchemy engine and session, and exposes helpers for running and compiling SQL statements.
 
 When you run `playground.py`, it calls `globals().update(ipython_playground.all_extras())`, which injects all these objects into your interactive session, making them immediately available for experimentation.
+
+---
+
+*This project was created from [iloveitaly/python-package-template](https://github.com/iloveitaly/python-package-template)*
