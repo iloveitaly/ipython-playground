@@ -136,6 +136,8 @@ def find_all_sqlmodels(module: ModuleType):
         log.warning("Could not find SQLModel, skipping model discovery")
         return {}
 
+    from enum import Enum
+
     log.debug(f"Starting model import from module: {module.__name__}")
     model_classes = {}
 
@@ -153,9 +155,13 @@ def find_all_sqlmodels(module: ModuleType):
 
         # Get all classes from module
         for name, obj in inspect.getmembers(submodule):
-            if inspect.isclass(obj) and issubclass(obj, SQLModel) and obj != SQLModel:
-                log.debug(f"Found model class: {name}")
-                model_classes[name] = obj
+            if inspect.isclass(obj):
+                if issubclass(obj, SQLModel) and obj != SQLModel:
+                    log.debug(f"Found model class: {name}")
+                    model_classes[name] = obj
+                elif issubclass(obj, Enum) and obj != Enum:
+                    log.debug(f"Found enum class: {name}")
+                    model_classes[name] = obj
 
     log.debug(f"Completed model import. Found {len(model_classes)} models")
     return model_classes
