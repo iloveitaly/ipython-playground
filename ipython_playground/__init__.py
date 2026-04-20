@@ -104,6 +104,15 @@ def output():
         elif hasattr(module, "__file__"):
             path = module.__file__
 
+        if path:
+            try:
+                cwd = Path.cwd()
+                abs_path = Path(path).resolve()
+                if abs_path.is_relative_to(cwd):
+                    path = str(abs_path.relative_to(cwd))
+            except (ValueError, OSError):
+                pass
+
         # Get version
         v = None
         # Try modern way first (metadata)
