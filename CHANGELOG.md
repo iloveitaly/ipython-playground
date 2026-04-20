@@ -1,3 +1,17 @@
+# Changelog
+
+## [0.5.0](https://github.com/iloveitaly/ipython-playground/compare/v0.4.1...v0.5.0) (2026-04-20)
+
+
+### Features
+
+* **playground:** improve signature formatting and module info reporting ([553eb37](https://github.com/iloveitaly/ipython-playground/commit/553eb370bba82def4c4056a792f721564ef79e0b))
+
+
+### Bug Fixes
+
+* **lint:** resolve import order and unused import errors ([a487e85](https://github.com/iloveitaly/ipython-playground/commit/a487e854de1e5d60ab1542a84a58a74a42f85d38))
+
 ## [0.4.1](https://github.com/iloveitaly/ipython-playground/compare/v0.4.0...v0.4.1) (2025-11-12)
 
 
@@ -7,7 +21,7 @@
 
 
 
-# [0.4.0](https://github.com/iloveitaly/ipython-playground/compare/v0.3.0...v0.4.0) (2025-08-26)
+## [0.4.0](https://github.com/iloveitaly/ipython-playground/compare/v0.3.0...v0.4.0) (2025-08-26)
 
 
 ### Features
@@ -16,7 +30,7 @@
 
 
 
-# [0.3.0](https://github.com/iloveitaly/ipython-playground/compare/v0.2.0...v0.3.0) (2025-04-19)
+## [0.3.0](https://github.com/iloveitaly/ipython-playground/compare/v0.2.0...v0.3.0) (2025-04-19)
 
 
 ### Bug Fixes
@@ -32,7 +46,7 @@
 
 
 
-# [0.2.0](https://github.com/iloveitaly/ipython-playground/compare/9ee62b645e51b1d6aa25649db8b69fbeabaa6ab7...v0.2.0) (2025-03-19)
+## [0.2.0](https://github.com/iloveitaly/ipython-playground/compare/9ee62b645e51b1d6aa25649db8b69fbeabaa6ab7...v0.2.0) (2025-03-19)
 
 
 ### Features
@@ -40,6 +54,3 @@
 * add command-line help option to main function ([7d5e435](https://github.com/iloveitaly/ipython-playground/commit/7d5e435cc911a741451b89ce113346ef092f0609))
 * add create_playground_file function ([1e01789](https://github.com/iloveitaly/ipython-playground/commit/1e017895582310d1cbb8d77a42721faa47286636))
 * auto-import modules in ipython sessions ([9ee62b6](https://github.com/iloveitaly/ipython-playground/commit/9ee62b645e51b1d6aa25649db8b69fbeabaa6ab7))
-
-
-
