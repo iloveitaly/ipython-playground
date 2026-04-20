@@ -1,6 +1,7 @@
 import re
 from urllib.request import urlopen
 
+
 def read_data_url(url: str) -> str:
     """
     Read a url with json, csv, etc and return the data as a decoded string.
