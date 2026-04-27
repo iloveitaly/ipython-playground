@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.0](https://github.com/iloveitaly/ipython-playground/compare/v0.5.0...v0.6.0) (2026-04-27)
+
+
+### Features
+
+* **extras:** include Enum classes in model discovery ([251e936](https://github.com/iloveitaly/ipython-playground/commit/251e936123912b731876c556cf5f4504b9085a80))
+* **output:** use relative paths for local modules ([cc0aa59](https://github.com/iloveitaly/ipython-playground/commit/cc0aa59160d2991154af68d033540a492ea13899))
+* refactor logging to dedicated module and add URL data reader ([d9d0b31](https://github.com/iloveitaly/ipython-playground/commit/d9d0b31574847e2a4205093b3e7cf17169f3f328))
+
 ## [0.5.0](https://github.com/iloveitaly/ipython-playground/compare/v0.4.1...v0.5.0) (2026-04-20)
 
 
