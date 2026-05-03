@@ -15,7 +15,13 @@ from . import extras
 def _format_signature(obj: Any) -> str:
     try:
         sig = str(inspect.signature(obj.__init__ if inspect.isclass(obj) else obj))
-        if sig in ("(self, *args, **kwargs)", "(self, /, *args, **kwargs)"):
+        if sig in (
+            "(self, *args, **kwargs)",
+            "(self, /, *args, **kwargs)",
+            "(self, *args)",
+            "(__pydantic_self__, **data: Any) -> None",
+            "(__pydantic_self__, **data: 'Any') -> 'None'",
+        ):
             return ""
         return sig
     except (TypeError, ValueError):

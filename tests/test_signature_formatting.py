@@ -1,3 +1,4 @@
+from typing import Any
 from ipython_playground import _format_signature
 
 
@@ -30,6 +31,25 @@ def test_format_signature_classes():
     # These are the ones we want to omit
     assert _format_signature(StarArgsClass) == ""
     assert _format_signature(PositionalOnlyStarArgsClass) == ""
+
+    class PathLike:
+        def __init__(self, *args):
+            pass
+
+    assert _format_signature(PathLike) == ""
+
+    # Mocking a Pydantic-like signature
+    class PydanticLike:
+        def __init__(__pydantic_self__, **data: Any) -> None:
+            pass
+
+    assert _format_signature(PydanticLike) == ""
+
+    class PydanticLikeString:
+        def __init__(__pydantic_self__, **data: "Any") -> "None":
+            pass
+
+    assert _format_signature(PydanticLikeString) == ""
 
 
 def test_format_signature_functions():
