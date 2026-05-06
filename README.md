@@ -28,6 +28,7 @@ uv add ipython-playground
 The `ipython_playground/extras.py` file provides logic to automatically import and expose useful modules and objects in your playground session. The main entry point is the `all()` function, which:
 
 - Loads common app modules (like `app.models`, `app.commands`, `app.jobs`) if available.
+- Monkey patches `Enum.__repr__` to provide a cleaner, concise display of enum members in the REPL (e.g. `MyEnum.MEMBER` instead of `<MyEnum.MEMBER: 1>`).
 - Attempts to import helpful libraries such as `funcy_pipe`, `sqlalchemy`, and `sqlmodel`.
 - Optionally discovers all SQLModel classes in your models module and adds them to the namespace.
 - If a database URL is available (either passed in or imported from your app config), sets up a SQLAlchemy engine and session, and exposes helpers for running and compiling SQL statements.

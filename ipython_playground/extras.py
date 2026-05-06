@@ -168,6 +168,11 @@ def find_all_sqlmodels(module: ModuleType):
 
 
 def all(*, database_url: Optional[str] = None):
+    from enum import Enum
+
+    # Patch Enum display for cleaner output in IPython
+    Enum.__repr__ = lambda self: f"{self.__class__.__name__}.{self.name}"
+
     from .database import get_database_url, setup_database_session
     from .redis import setup_redis
     from . import utils
