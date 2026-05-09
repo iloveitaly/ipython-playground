@@ -42,6 +42,18 @@ def get_default_module_imports():
         # Built-in modules - always available
         {"module": "json"},
         {"module": "re"},
+        {
+            "module": "typing",
+            "alias": "t",
+            "extra_imports": [
+                {"from": "typing", "import": "List"},
+                {"from": "typing", "import": "Any"},
+                {"from": "typing", "import": "Optional"},
+                {"from": "typing", "import": "Dict"},
+                {"from": "typing", "import": "Union"},
+                {"from": "typing", "import": "TypeVar"},
+            ],
+        },
         # Additional built-in and common imports
         {
             "module": "datetime",
@@ -59,6 +71,10 @@ def get_default_module_imports():
         {"module": "funcy", "alias": "f"},
         {"module": "funcy_pipe", "alias": "fp", "log_warning": True},
         {"module": "sqlalchemy", "alias": "sa", "log_warning": True},
+        {
+            "module": "pydantic",
+            "extra_imports": [{"from": "pydantic", "import": "TypeAdapter"}],
+        },
         # Special handling for sqlmodel - imports additional symbols
         {
             "module": "sqlmodel",
