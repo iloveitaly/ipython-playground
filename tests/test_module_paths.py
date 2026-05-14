@@ -1,6 +1,6 @@
+import importlib.metadata
 import tempfile
 from pathlib import Path
-import importlib.metadata
 from unittest import mock
 
 # We want to test the logic of get_module_info.

@@ -158,7 +158,7 @@ def find_all_sqlmodels(module: ModuleType):
     model_classes = {}
 
     # Walk through all submodules
-    for loader, module_name, is_pkg in pkgutil.walk_packages(module.__path__):
+    for _loader, module_name, _is_pkg in pkgutil.walk_packages(module.__path__):
         full_name = f"{module.__name__}.{module_name}"
         log.debug(f"Importing submodule: {full_name}")
 
@@ -183,15 +183,15 @@ def find_all_sqlmodels(module: ModuleType):
     return model_classes
 
 
-def all(*, database_url: Optional[str] = None):
+def all(*, database_url: str | None = None):
     from enum import Enum
 
     # Patch Enum display for cleaner output in IPython
     Enum.__repr__ = lambda self: f"{self.__class__.__name__}.{self.name}"
 
+    from . import utils
     from .database import get_database_url, setup_database_session
     from .redis import setup_redis
-    from . import utils
 
     modules = load_modules_for_ipython()
 

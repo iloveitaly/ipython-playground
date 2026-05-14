@@ -1,6 +1,7 @@
 import sys
 import types
 from enum import Enum
+
 from ipython_playground.extras import find_all_sqlmodels
 
 

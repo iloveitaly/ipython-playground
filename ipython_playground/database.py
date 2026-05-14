@@ -1,5 +1,3 @@
-from typing import Optional
-
 from .logger import log
 
 
@@ -42,7 +40,7 @@ def reset_database_session(database_url: str):
     return setup_database_session(database_url)
 
 
-def get_database_url() -> Optional[str]:
+def get_database_url() -> str | None:
     """Attempt to get database URL from app configuration"""
     try:
         from app.configuration.database import (  # type: ignore

@@ -1,4 +1,5 @@
 from typing import Any
+
 from ipython_playground import _format_signature
 
 

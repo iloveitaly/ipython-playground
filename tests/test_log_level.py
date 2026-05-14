@@ -1,9 +1,9 @@
 """Test log level validation functionality."""
 
-import os
-import logging
-import sys
 import importlib
+import logging
+import os
+import sys
 from unittest import mock
 
 

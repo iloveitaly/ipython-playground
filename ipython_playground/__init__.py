@@ -1,7 +1,7 @@
 import importlib.metadata
 import inspect
-import sys
 import logging
+import sys
 from pathlib import Path
 from typing import Any, get_type_hints
 
@@ -11,6 +11,7 @@ from rich.text import Text
 from ipython_playground.create import create_playground_file
 
 from . import extras
+from .version import __version__ as __version__
 
 
 def _format_signature(obj: Any) -> str:
@@ -189,9 +190,9 @@ def output():
 def all_extras(**kwargs):
     return extras.all(**kwargs)
 
-from .version import __version__
 
 log = logging.getLogger(__name__)
+
 
 def main():
     """

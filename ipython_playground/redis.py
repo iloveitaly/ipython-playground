@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from typing import Dict
-
 from .logger import log
 
 
-def setup_redis() -> Dict[str, object]:
+def setup_redis() -> dict[str, object]:
     """Create a Redis client from app configuration and expose it for IPython.
 
     Looks up `get_redis` from `app.configuration.redis` (from the starter template)
