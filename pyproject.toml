@@ -10,7 +10,6 @@ dependencies = ["rich>=13.9.4"]
 authors = [{ name = "Michael Bianco", email = "mike@mikebian.co" }]
 urls = { "Repository" = "https://github.com/iloveitaly/ipython-playground" }
 
-# additional packaging information: https://packaging.python.org/en/latest/specifications/core-metadata/#license
 [project.scripts]
 ipython-playground = "ipython_playground:main"
 
@@ -44,6 +43,3 @@ source = ["ipython_playground"]
 
 [tool.coverage.report]
 fail_under = 15
-
-[tool.ruff]
-extend-exclude = ["playground.py", "playground/"]

@@ -1,6 +1,7 @@
 import importlib.metadata
 import inspect
 import sys
+import logging
 from pathlib import Path
 from typing import Any, get_type_hints
 
@@ -188,6 +189,9 @@ def output():
 def all_extras(**kwargs):
     return extras.all(**kwargs)
 
+from .version import __version__
+
+log = logging.getLogger(__name__)
 
 def main():
     """
