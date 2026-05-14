@@ -1,8 +1,9 @@
 from ipython_playground.extras import get_default_module_imports
 
+
 def test_get_default_module_imports_includes_typing_and_pydantic():
     imports = get_default_module_imports()
-    
+
     # Check typing
     typing_import = next((i for i in imports if i["module"] == "typing"), None)
     assert typing_import is not None
