@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/iloveitaly/ipython-playground/compare/v0.6.0...v0.7.0) (2026-05-14)
+
+
+### Features
+
+* add typing and pydantic to default imports ([f49f484](https://github.com/iloveitaly/ipython-playground/commit/f49f484f2b4e78d0c3e7c7ad60463716187bdff7))
+* add versioning logic and consolidate linting configuration ([9b212f7](https://github.com/iloveitaly/ipython-playground/commit/9b212f789d3f03c23b629161227e9ee03cbbf61c))
+
 ## [0.6.0](https://github.com/iloveitaly/ipython-playground/compare/v0.5.0...v0.6.0) (2026-05-06)
 
 
