@@ -6,8 +6,6 @@ from ipython_playground import _format_signature
 class DefaultClass:
     """Class with default __init__ from object or Pydantic-like."""
 
-    pass
-
 
 class CustomInitClass:
     def __init__(self, a: int, b: str = "default"):
