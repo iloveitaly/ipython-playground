@@ -33,7 +33,7 @@ def reset_database_session(database_url: str):
         current_session = _session_context.get()
         if current_session:
             current_session.close()
-    except Exception as e:
+    except LookupError as e:
         log.debug(f"No existing session to close: {e}")
 
     # Set up new session
